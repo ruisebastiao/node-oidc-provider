@@ -248,6 +248,7 @@ module.exports = function testHelper(dir, basename, mountTo) {
         clients,
         adapter: TestAdapter,
         keystore: global.keystore,
+        integrity: global.integrity,
       }).then(() => {
         if (mountTo) {
           const app = new Koa();
