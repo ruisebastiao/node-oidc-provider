@@ -3,8 +3,6 @@ const { expect } = require('chai');
 const bootstrap = require('../test_helper');
 const { decode, encode } = require('base64url');
 
-const fail = () => { throw new Error('expected promise to be rejected'); };
-
 describe('BaseToken', () => {
   before(bootstrap(__dirname)); // provider
 

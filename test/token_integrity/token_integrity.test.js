@@ -4,8 +4,6 @@ const { expect } = require('chai');
 const bootstrap = require('../test_helper');
 const { decode, encode } = require('base64url');
 
-const fail = () => { throw new Error('expected promise to be rejected'); };
-
 describe('tokenIntegrity feature (ChecksumToken)', () => {
   before(bootstrap(__dirname)); // provider
 
