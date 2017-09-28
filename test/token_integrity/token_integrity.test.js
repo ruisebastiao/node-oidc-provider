@@ -66,11 +66,6 @@ describe('tokenIntegrity feature (ChecksumToken)', () => {
     expect(await this.provider.AccessToken.find(`${token.substring(0, 48)}elevenchars${token.substring(59)}`)).to.be.undefined;
   });
 
-  it('does not go to adapter for invalid formats', async function () {
-    expect(await this.provider.AccessToken.find('foobar')).to.be.undefined;
-    expect(this.adapter.find.called).to.be.false;
-  });
-
   it('returns undefined for not found tokens', async function () {
     expect(await this.provider.AccessToken.find('MDQ0OWNjM2YtMzgzYi00M2FmLWJiNWItYWRhZjBjY2Y1ODY10FJ-UgHXVVUXSS-G5c8rn-YsfV4OlH5e1f_MneAvRyqwV6rIvC2Uq0')).to.be.undefined;
     expect(this.adapter.find.calledOnce).to.be.true;
