@@ -9,7 +9,6 @@ const { Account, TestAdapter } = require('./models');
 const { expect } = require('chai');
 const { parse } = require('url');
 const path = require('path');
-const { defaultsDeep } = require('lodash');
 const Koa = require('koa');
 const querystring = require('querystring');
 const mount = require('koa-mount');
@@ -50,17 +49,6 @@ module.exports = function testHelper(dir, basename, mountTo) {
   let { config, client, clients } = require(conf); // eslint-disable-line
   if (client && !clients) { clients = [client]; }
   if (!config.findById) config.findById = Account.findById;
-
-  switch (process.env.INTEGRITY) {
-    case 'enabled':
-      defaultsDeep(config, { features: { tokenIntegrity: true } });
-      break;
-    case 'disabled':
-      defaultsDeep(config, { features: { tokenIntegrity: false } });
-      break;
-    default:
-      defaultsDeep(config, { features: { tokenIntegrity: Math.random() < 0.5 } });
-  }
 
   const provider = new Provider(`http://127.0.0.1:${port}${mountTo || ''}`, config);
   provider.defaultHttpOptions = { timeout: 50 };
