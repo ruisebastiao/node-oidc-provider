@@ -48,9 +48,7 @@ describe('tokenIntegrity feature (ChecksumToken)', () => {
     const manipulated = JSON.parse(decode(stored.payload));
     manipulated.exp += 100;
     stored.payload = encode(JSON.stringify(manipulated));
-    return this.provider.AccessToken.find(token).then(fail, (err) => {
-      expect(err.message).to.equal('invalid_token');
-    });
+    expect(await this.provider.AccessToken.find(token)).to.be.undefined;
   });
 
   it('prevents from DB manipulation of token signatures', async function () {
@@ -60,25 +58,18 @@ describe('tokenIntegrity feature (ChecksumToken)', () => {
     const jti = token.substring(0, 48);
     const stored = this.adapter.syncFind(jti);
     stored.signature = 'foo';
-    return this.provider.AccessToken.find(`${token.substring(0, 59)}foo`).then(fail, (err) => {
-      expect(err.message).to.equal('invalid_token');
-    });
+    expect(await this.provider.AccessToken.find(`${token.substring(0, 59)}foo`)).to.be.undefined;
   });
 
   it('prevents reconstructing tokens from DB without having client DB dumps', async function () {
     const token = await new this.provider.AccessToken({
       grantId: 'foo',
     }).save();
-    return this.provider.AccessToken.find(`${token.substring(0, 48)}elevenchars${token.substring(59)}`).then(fail, (err) => {
-      expect(err.message).to.equal('invalid_token');
-    });
+    expect(await this.provider.AccessToken.find(`${token.substring(0, 48)}elevenchars${token.substring(59)}`)).to.be.undefined;
   });
 
   it('does not go to adapter for invalid formats', async function () {
-    await this.provider.AccessToken.find('foobar').then(fail, (err) => {
-      expect(err.message).to.equal('invalid_token');
-    });
-
+    expect(await this.provider.AccessToken.find('foobar')).to.be.undefined;
     expect(this.adapter.find.called).to.be.false;
   });
 

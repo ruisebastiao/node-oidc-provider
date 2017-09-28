@@ -30,16 +30,11 @@ describe('BaseToken', () => {
     const payload = JSON.parse(decode(stored.payload));
     payload.exp = 0;
     stored.payload = encode(JSON.stringify(payload));
-    return this.provider.AccessToken.find(token).then(fail, (err) => {
-      expect(err.message).to.equal('invalid_token');
-    });
+    expect(await this.provider.AccessToken.find(token)).to.be.undefined;
   });
 
   it('does not go to adapter for invalid formats', async function () {
-    await this.provider.AccessToken.find('foobar').then(fail, (err) => {
-      expect(err.message).to.equal('invalid_token');
-    });
-
+    expect(await this.provider.AccessToken.find('foobar')).to.be.undefined;
     expect(this.adapter.find.called).to.be.false;
   });
 
