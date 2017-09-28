@@ -13,3 +13,7 @@ script:
 after_script:
   - npm install codecov
   - ./node_modules/.bin/codecov
+env:
+  -
+  - INTEGRITY=enabled
+  - INTEGRITY=disabled

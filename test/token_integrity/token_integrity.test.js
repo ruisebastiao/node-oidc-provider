@@ -87,7 +87,7 @@ describe('tokenIntegrity feature (ChecksumToken)', () => {
     expect(this.adapter.find.calledOnce).to.be.true;
   });
 
-  it('prevents from DB manipulation of token signatures', async function () {
+  it('assigns returned consumed prop', async function () {
     const token = await new this.provider.AccessToken({
       grantId: 'foo',
     }).save();
